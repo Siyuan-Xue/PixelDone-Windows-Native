@@ -102,6 +102,8 @@ Formal and beta releases are created only from immutable `vX.Y.Z` or `vX.Y.Z-bet
 `.github/workflows/release-windows.yml`. The workflow repeats formatting and tests, validates
 all source version declarations, builds the installer once, publishes its SHA-256 sidecar, and
 safely creates or verifies the matching GitHub Release.
+Release automation publishes only to GitHub. The client's Gitee support is a read-only update
+discovery fallback and does not add any Gitee CI job, secret, upload, or repository synchronization.
 
 Cloud support is enabled at process launch with:
 

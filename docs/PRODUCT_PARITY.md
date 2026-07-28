@@ -34,8 +34,9 @@ update discovery, and reminder delivery.
 - Run sign-up, first-sign-in destructive restore, bidirectional sync, realtime invalidation,
   attachment upload/download/cleanup, password change, and conflict resolution against the
   production Supabase 3.2 deployment.
-- Publish a GitHub/Gitee beta release containing the exact
-  `PixelDone-4.0.0-beta.1-win-x64-setup.exe` asset and test update discovery.
+- Test update discovery against the published GitHub beta release containing the exact
+  `PixelDone-4.0.0-beta.1-win-x64-setup.exe` asset. Gitee publishing is intentionally out of
+  scope.
 - Add Authenticode signing before a public stable release if Windows reputation warnings are
   unacceptable. Signing is not required for the selected beta deployment model.
 
