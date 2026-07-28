@@ -42,6 +42,24 @@ jobs:
             --no-restore
           if ($LASTEXITCODE -ne 0) { throw "dotnet format verification failed." }
 
+      - name: Export required cloud build configuration
+        if: github.event_name != 'pull_request'
+        shell: pwsh
+        env:
+          PIXELDONE_SUPABASE_URL: ${{ secrets.PIXELDONE_SUPABASE_URL }}
+          PIXELDONE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.PIXELDONE_SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:PIXELDONE_SUPABASE_URL)) {
+            throw "Missing PIXELDONE_SUPABASE_URL."
+          }
+          if ([string]::IsNullOrWhiteSpace($env:PIXELDONE_SUPABASE_PUBLISHABLE_KEY)) {
+            throw "Missing PIXELDONE_SUPABASE_PUBLISHABLE_KEY."
+          }
+          "PIXELDONE_SUPABASE_URL=$env:PIXELDONE_SUPABASE_URL" >> $env:GITHUB_ENV
+          "PIXELDONE_SUPABASE_PUBLISHABLE_KEY=$env:PIXELDONE_SUPABASE_PUBLISHABLE_KEY" >> $env:GITHUB_ENV
+          "PIXELDONE_REQUIRE_CLOUD_CONFIG=true" >> $env:GITHUB_ENV
+          "PIXELDONE_ALLOW_INSECURE_HTTP=true" >> $env:GITHUB_ENV
+
       - name: Test, publish, and build installer
         shell: pwsh
         run: .\scripts\build.ps1 -Installer

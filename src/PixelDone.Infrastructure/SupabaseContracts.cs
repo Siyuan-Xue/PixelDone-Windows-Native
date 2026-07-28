@@ -24,7 +24,9 @@ public sealed record SupabaseConfig(
             Environment.GetEnvironmentVariable("PIXELDONE_SUPABASE_PUBLISHABLE_KEY") ??
             BuildMetadata.Value("PixelDoneSupabasePublishableKey");
         var allowInsecure =
-            Environment.GetEnvironmentVariable("PIXELDONE_ALLOW_INSECURE_HTTP") is
+            RuntimeOrBuildValue(
+                "PIXELDONE_ALLOW_INSECURE_HTTP",
+                "PixelDoneAllowInsecureHttp") is
                 "1" or "true" or "TRUE" or "yes" or "YES";
         if (string.IsNullOrWhiteSpace(baseUrl) || string.IsNullOrWhiteSpace(publishableKey))
         {
@@ -42,6 +44,9 @@ public sealed record SupabaseConfig(
 
         return new SupabaseConfig(baseUrl, publishableKey.Trim(), allowInsecure);
     }
+
+    private static string? RuntimeOrBuildValue(string environmentName, string metadataName) =>
+        Environment.GetEnvironmentVariable(environmentName) ?? BuildMetadata.Value(metadataName);
 }
 
 internal static class BuildMetadata

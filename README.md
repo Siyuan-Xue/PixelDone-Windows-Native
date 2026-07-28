@@ -98,6 +98,11 @@ To build the installer after installing NSIS:
 The release artifact is
 `artifacts\installer\PixelDone-4.0.0-beta.1-win-x64-setup.exe`.
 
+Formal and beta releases are created only from immutable `vX.Y.Z` or `vX.Y.Z-beta.N` tags by
+`.github/workflows/release-windows.yml`. The workflow repeats formatting and tests, validates
+all source version declarations, builds the installer once, publishes its SHA-256 sidecar, and
+safely creates or verifies the matching GitHub Release.
+
 Cloud support is enabled at process launch with:
 
 ```powershell

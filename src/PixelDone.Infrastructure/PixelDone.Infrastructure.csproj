@@ -17,5 +17,20 @@
       <_Parameter1>PixelDoneSupabasePublishableKey</_Parameter1>
       <_Parameter2>$(PIXELDONE_SUPABASE_PUBLISHABLE_KEY)</_Parameter2>
     </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>PixelDoneAllowInsecureHttp</_Parameter1>
+      <_Parameter2>$(PIXELDONE_ALLOW_INSECURE_HTTP)</_Parameter2>
+    </AssemblyAttribute>
   </ItemGroup>
+  <Target
+    Name="ValidateRequiredCloudConfiguration"
+    BeforeTargets="CoreCompile"
+    Condition="'$(PIXELDONE_REQUIRE_CLOUD_CONFIG)' == 'true'">
+    <Error
+      Condition="'$(PIXELDONE_SUPABASE_URL)' == ''"
+      Text="PIXELDONE_SUPABASE_URL is required for this build." />
+    <Error
+      Condition="'$(PIXELDONE_SUPABASE_PUBLISHABLE_KEY)' == ''"
+      Text="PIXELDONE_SUPABASE_PUBLISHABLE_KEY is required for this build." />
+  </Target>
 </Project>

@@ -1,0 +1,232 @@
+name: Release Windows x64
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing immutable vX.Y.Z or vX.Y.Z-beta.N tag to publish or retry
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  resolve_release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+      commit: ${{ steps.release.outputs.commit }}
+      installer: ${{ steps.release.outputs.installer }}
+      prerelease: ${{ steps.release.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Resolve immutable release identity
+        id: release
+        shell: pwsh
+        env:
+          DISPATCH_TAG: ${{ inputs.tag }}
+          RUN_CONTEXT_REF: ${{ github.ref_name }}
+          RUN_CONTEXT_SHA: ${{ github.sha }}
+        run: |
+          $tag = if ($env:GITHUB_EVENT_NAME -eq "workflow_dispatch") {
+            $env:DISPATCH_TAG.Trim()
+          } else {
+            $env:RUN_CONTEXT_REF
+          }
+          if ($tag -notmatch '^v(?<version>\d+\.\d+\.\d+(?:-beta\.\d+)?)$') {
+            throw "Release tag must be vX.Y.Z or vX.Y.Z-beta.N: $tag"
+          }
+          $version = $Matches.version
+          git fetch origin "refs/tags/${tag}:refs/tags/${tag}" --force
+          if ($LASTEXITCODE -ne 0) { throw "Unable to fetch release tag $tag." }
+          $commit = (git rev-list -n 1 "$tag^{commit}").Trim()
+          if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($commit)) {
+            throw "Unable to resolve release tag $tag."
+          }
+          if ($env:GITHUB_EVENT_NAME -eq "push" -and $commit -ne $env:RUN_CONTEXT_SHA) {
+            throw "Pushed tag $tag does not resolve to the workflow commit."
+          }
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "commit=$commit" >> $env:GITHUB_OUTPUT
+          "installer=PixelDone-$version-win-x64-setup.exe" >> $env:GITHUB_OUTPUT
+          $prerelease = $version.Contains("-").ToString().ToLowerInvariant()
+          "prerelease=$prerelease" >> $env:GITHUB_OUTPUT
+
+  quality_gate:
+    needs: resolve_release
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      PIXELDONE_SUPABASE_URL: ${{ secrets.PIXELDONE_SUPABASE_URL }}
+      PIXELDONE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.PIXELDONE_SUPABASE_PUBLISHABLE_KEY }}
+      PIXELDONE_REQUIRE_CLOUD_CONFIG: "true"
+      PIXELDONE_ALLOW_INSECURE_HTTP: "true"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.resolve_release.outputs.tag }}
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.302
+
+      - name: Validate tag, source versions, and main ancestry
+        shell: pwsh
+        env:
+          RELEASE_TAG: ${{ needs.resolve_release.outputs.tag }}
+          RELEASE_COMMIT: ${{ needs.resolve_release.outputs.commit }}
+        run: |
+          $checkoutCommit = (git rev-parse HEAD).Trim()
+          if ($checkoutCommit -ne $env:RELEASE_COMMIT) {
+            throw "Checkout does not match the immutable release tag."
+          }
+          git fetch origin main --no-tags
+          if ($LASTEXITCODE -ne 0) { throw "Unable to fetch origin/main." }
+          git merge-base --is-ancestor $env:RELEASE_COMMIT origin/main
+          if ($LASTEXITCODE -ne 0) {
+            throw "Release tag must point to a commit reachable from main."
+          }
+          .\scripts\Validate-ReleaseVersion.ps1 -Tag $env:RELEASE_TAG
+
+      - name: Restore, format, and test
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:PIXELDONE_SUPABASE_URL)) {
+            throw "Missing PIXELDONE_SUPABASE_URL."
+          }
+          if ([string]::IsNullOrWhiteSpace($env:PIXELDONE_SUPABASE_PUBLISHABLE_KEY)) {
+            throw "Missing PIXELDONE_SUPABASE_PUBLISHABLE_KEY."
+          }
+          dotnet restore .\PixelDone-Windows-Native.slnx --runtime win-x64
+          if ($LASTEXITCODE -ne 0) { throw "dotnet restore failed." }
+          dotnet format .\PixelDone-Windows-Native.slnx --verify-no-changes --no-restore
+          if ($LASTEXITCODE -ne 0) { throw "dotnet format failed." }
+          dotnet test .\PixelDone-Windows-Native.slnx --configuration Release --no-restore
+          if ($LASTEXITCODE -ne 0) { throw "dotnet test failed." }
+
+  build_release:
+    needs: [resolve_release, quality_gate]
+    runs-on: windows-latest
+    timeout-minutes: 45
+    env:
+      PIXELDONE_SUPABASE_URL: ${{ secrets.PIXELDONE_SUPABASE_URL }}
+      PIXELDONE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.PIXELDONE_SUPABASE_PUBLISHABLE_KEY }}
+      PIXELDONE_REQUIRE_CLOUD_CONFIG: "true"
+      PIXELDONE_ALLOW_INSECURE_HTTP: "true"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.resolve_release.outputs.tag }}
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.302
+
+      - name: Install NSIS
+        shell: pwsh
+        run: |
+          choco install nsis --yes --no-progress
+          if ($LASTEXITCODE -ne 0) { throw "Unable to install NSIS." }
+
+      - name: Build release installer once
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:PIXELDONE_SUPABASE_URL)) {
+            throw "Missing PIXELDONE_SUPABASE_URL."
+          }
+          if ([string]::IsNullOrWhiteSpace($env:PIXELDONE_SUPABASE_PUBLISHABLE_KEY)) {
+            throw "Missing PIXELDONE_SUPABASE_PUBLISHABLE_KEY."
+          }
+          .\scripts\build.ps1 -Installer
+
+      - name: Verify and stage immutable release artifacts
+        shell: pwsh
+        env:
+          RELEASE_COMMIT: ${{ needs.resolve_release.outputs.commit }}
+          INSTALLER: ${{ needs.resolve_release.outputs.installer }}
+        run: |
+          $installerPath = Join-Path "artifacts\installer" $env:INSTALLER
+          if (-not (Test-Path -LiteralPath $installerPath)) {
+            throw "Missing expected installer $installerPath."
+          }
+          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $installerPath).Hash
+          $size = (Get-Item -LiteralPath $installerPath).Length
+          if ($size -lt 1MB) { throw "Installer is unexpectedly small." }
+
+          New-Item -ItemType Directory -Force release-artifacts | Out-Null
+          Copy-Item -LiteralPath $installerPath -Destination "release-artifacts\$env:INSTALLER"
+          "$hash  $env:INSTALLER" |
+            Set-Content -Encoding ascii "release-artifacts\$env:INSTALLER.sha256"
+
+          $sourceNotes = (Get-Content -Raw RELEASE_NOTES.md).TrimEnd()
+          $verification = @(
+            "## Automated verification",
+            "",
+            "- Source commit: ``$env:RELEASE_COMMIT``",
+            "- GitHub Actions passed formatting, 16 tests, publish, and NSIS packaging.",
+            "- Release asset: ``$env:INSTALLER`` ($size bytes).",
+            "- SHA-256: ``$hash``."
+          ) -join "`n"
+          "$sourceNotes`n`n$verification" |
+            Set-Content -Encoding utf8 "release-artifacts\release-notes.md"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pixeldone-windows-release-${{ needs.resolve_release.outputs.version }}
+          path: release-artifacts/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish_github:
+    needs: [resolve_release, quality_gate, build_release]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.resolve_release.outputs.tag }}
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: pixeldone-windows-release-${{ needs.resolve_release.outputs.version }}
+          path: release-artifacts
+
+      - name: Create or verify immutable GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.resolve_release.outputs.tag }}
+          RELEASE_COMMIT: ${{ needs.resolve_release.outputs.commit }}
+          RELEASE_VERSION: ${{ needs.resolve_release.outputs.version }}
+          INSTALLER: ${{ needs.resolve_release.outputs.installer }}
+          PRERELEASE: ${{ needs.resolve_release.outputs.prerelease }}
+        run: |
+          $assets = @(
+            "release-artifacts/$env:INSTALLER",
+            "release-artifacts/$env:INSTALLER.sha256"
+          )
+          ./.github/scripts/Publish-GitHubRelease.ps1 `
+            -Repository $env:GITHUB_REPOSITORY `
+            -Tag $env:RELEASE_TAG `
+            -ExpectedCommit $env:RELEASE_COMMIT `
+            -Title "PixelDone for Windows $env:RELEASE_TAG" `
+            -NotesPath "release-artifacts/release-notes.md" `
+            -AssetPaths $assets `
+            -Prerelease ($env:PRERELEASE -eq "true")

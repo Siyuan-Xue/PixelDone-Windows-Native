@@ -42,6 +42,11 @@ repository build script and its 16 tests, builds the self-contained x64 installe
 versioned filename and size, writes a SHA-256 sidecar, and uploads both files as a seven-day
 workflow artifact. Workflow permissions are read-only and duplicate runs are cancelled.
 
+Tag-driven releases are separate from CI. `.github/workflows/release-windows.yml` accepts only
+an immutable `vX.Y.Z` or `vX.Y.Z-beta.N` tag reachable from `main`, requires every product and
+packaging version declaration to match, rebuilds and re-tests the tagged source, and publishes
+the installer plus SHA-256 through an idempotent GitHub Release publisher.
+
 ## Conflicts
 
 The V4 installer removes a detected legacy Tauri installation and its local program/data
