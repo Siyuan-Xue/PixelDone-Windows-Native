@@ -1,5 +1,7 @@
 # PixelDone for Windows
 
+[![CI](https://github.com/Siyuan-Xue/PixelDone-Windows-Native/actions/workflows/ci.yml/badge.svg)](https://github.com/Siyuan-Xue/PixelDone-Windows-Native/actions/workflows/ci.yml)
+
 PixelDone's forward-looking Windows client. This repository is a clean native rewrite, not a
 rename or continuation of the legacy Tauri application.
 

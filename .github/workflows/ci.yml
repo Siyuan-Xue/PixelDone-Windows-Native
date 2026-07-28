@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.302
+
+      - name: Install NSIS
+        shell: pwsh
+        run: |
+          choco install nsis --yes --no-progress
+          if ($LASTEXITCODE -ne 0) { throw "Unable to install NSIS." }
+          $makeNsis = "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
+          if (-not (Test-Path $makeNsis)) { throw "NSIS did not install makensis.exe." }
+          & $makeNsis /VERSION
+
+      - name: Restore and verify formatting
+        shell: pwsh
+        run: |
+          dotnet restore .\PixelDone-Windows-Native.slnx --runtime win-x64
+          if ($LASTEXITCODE -ne 0) { throw "dotnet restore failed." }
+          dotnet format .\PixelDone-Windows-Native.slnx `
+            --verify-no-changes `
+            --no-restore
+          if ($LASTEXITCODE -ne 0) { throw "dotnet format verification failed." }
+
+      - name: Test, publish, and build installer
+        shell: pwsh
+        run: .\scripts\build.ps1 -Installer
+
+      - name: Verify immutable installer output
+        id: artifact
+        shell: pwsh
+        run: |
+          [xml]$project = Get-Content -Raw .\src\PixelDone.Windows\PixelDone.Windows.csproj
+          $version = ([string]$project.Project.PropertyGroup.Version).Trim()
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            throw "The application project has no Version."
+          }
+          $name = "PixelDone-$version-win-x64-setup.exe"
+          $path = Join-Path "artifacts\installer" $name
+          if (-not (Test-Path -LiteralPath $path)) {
+            throw "Missing expected installer: $path"
+          }
+          $item = Get-Item -LiteralPath $path
+          if ($item.Length -lt 1MB) {
+            throw "Installer is unexpectedly small: $($item.Length) bytes."
+          }
+          $hash = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+          "$hash  $name" | Set-Content -Encoding ascii "$path.sha256"
+          "name=$name" >> $env:GITHUB_OUTPUT
+          "sha256=$hash" >> $env:GITHUB_OUTPUT
+          "Installer: $name"
+          "Size: $($item.Length) bytes"
+          "SHA-256: $hash"
+
+      - name: Upload verified installer
+        uses: actions/upload-artifact@v7
+        with:
+          name: pixeldone-windows-${{ github.sha }}
+          path: |
+            artifacts/installer/${{ steps.artifact.outputs.name }}
+            artifacts/installer/${{ steps.artifact.outputs.name }}.sha256
+          if-no-files-found: error
+          retention-days: 7

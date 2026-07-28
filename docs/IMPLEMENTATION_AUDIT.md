@@ -34,6 +34,14 @@ publish shape. The build script deterministically extracts the signed Microsoft 
 official restored runtime MSIX and verifies it before packaging. No third-party binary is
 substituted.
 
+## Continuous integration
+
+`.github/workflows/ci.yml` runs on every push, pull request, and manual dispatch. A
+`windows-latest` runner installs .NET 10.0.302 and NSIS, verifies `dotnet format`, executes the
+repository build script and its 16 tests, builds the self-contained x64 installer, verifies its
+versioned filename and size, writes a SHA-256 sidecar, and uploads both files as a seven-day
+workflow artifact. Workflow permissions are read-only and duplicate runs are cancelled.
+
 ## Conflicts
 
 The V4 installer removes a detected legacy Tauri installation and its local program/data
