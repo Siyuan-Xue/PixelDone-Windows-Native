@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/PixelDone.Core/PixelDone.Core.csproj" />
+  <Project Path="src/PixelDone.Infrastructure/PixelDone.Infrastructure.csproj" />
+  <Project Path="src/PixelDone.Windows/PixelDone.Windows.csproj" />
+  <Project Path="tests/PixelDone.Core.Tests/PixelDone.Core.Tests.csproj" />
+</Solution>
