@@ -18,8 +18,8 @@ if (Test-Path -LiteralPath $makeNsis -PathType Leaf) {
 
 $releaseVersion = $Version -replace '\.0$', ''
 $downloadUri =
-    "https://downloads.sourceforge.net/project/nsis/NSIS%203/$releaseVersion/" +
-    "nsis-$releaseVersion-setup.exe"
+    "https://sourceforge.net/projects/nsis/files/NSIS%203/$releaseVersion/" +
+    "nsis-$releaseVersion-setup.exe/download"
 $temporaryRoot = if ([string]::IsNullOrWhiteSpace($env:RUNNER_TEMP)) {
     [System.IO.Path]::GetTempPath()
 } else {
@@ -29,11 +29,18 @@ $installer = Join-Path $temporaryRoot "nsis-$releaseVersion-setup.exe"
 
 try {
     Write-Output "Downloading NSIS $Version from its official release."
-    Invoke-WebRequest `
-        -Uri $downloadUri `
-        -OutFile $installer `
-        -MaximumRetryCount 3 `
-        -RetryIntervalSec 5
+    curl.exe `
+        --fail `
+        --location `
+        --retry 3 `
+        --retry-all-errors `
+        --silent `
+        --show-error `
+        --output $installer `
+        $downloadUri
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to download NSIS $Version."
+    }
 
     $actualHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $installer).Hash
     if ($actualHash -ne $Sha256) {
