@@ -206,7 +206,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ needs.resolve_release.outputs.tag }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.repository.default_branch || needs.resolve_release.outputs.tag }}
           fetch-depth: 0
 
       - uses: actions/download-artifact@v7
