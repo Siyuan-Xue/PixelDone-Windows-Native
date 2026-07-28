@@ -138,9 +138,7 @@ jobs:
 
       - name: Install NSIS
         shell: pwsh
-        run: |
-          choco install nsis --yes --no-progress
-          if ($LASTEXITCODE -ne 0) { throw "Unable to install NSIS." }
+        run: .\scripts\Install-Nsis.ps1
 
       - name: Build release installer once
         shell: pwsh

@@ -25,12 +25,7 @@ jobs:
 
       - name: Install NSIS
         shell: pwsh
-        run: |
-          choco install nsis --yes --no-progress
-          if ($LASTEXITCODE -ne 0) { throw "Unable to install NSIS." }
-          $makeNsis = "${env:ProgramFiles(x86)}\NSIS\makensis.exe"
-          if (-not (Test-Path $makeNsis)) { throw "NSIS did not install makensis.exe." }
-          & $makeNsis /VERSION
+        run: .\scripts\Install-Nsis.ps1
 
       - name: Restore and verify formatting
         shell: pwsh
