@@ -31,7 +31,7 @@ if ($productVersion -notmatch "public const string Version = `"$escaped`";") {
 
 $nsis = Get-Content -Raw -LiteralPath (
     Join-Path $repositoryRoot "packaging\PixelDone.nsi")
-if ($nsis -notmatch "(?m)^!define PRODUCT_VERSION `"$escaped`"$") {
+if ($nsis -notmatch "(?m)^!define PRODUCT_VERSION `"$escaped`"`r?$") {
     throw "NSIS PRODUCT_VERSION does not equal $version."
 }
 

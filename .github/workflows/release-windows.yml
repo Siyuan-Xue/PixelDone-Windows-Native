@@ -100,6 +100,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             throw "Release tag must point to a commit reachable from main."
           }
+          # GitHub's Windows checkout can materialize CRLF even though Git stores LF.
+          # Normalize this validation input so an existing immutable tag remains retryable.
+          $nsisPath = ".\packaging\PixelDone.nsi"
+          $nsis = [System.IO.File]::ReadAllText($nsisPath).Replace("`r`n", "`n")
+          [System.IO.File]::WriteAllText(
+            $nsisPath,
+            $nsis,
+            [System.Text.UTF8Encoding]::new($false))
           .\scripts\Validate-ReleaseVersion.ps1 -Tag $env:RELEASE_TAG
 
       - name: Restore, format, and test
