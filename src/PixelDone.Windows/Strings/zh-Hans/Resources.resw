@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="PlatformSubtitle.Text" xml:space="preserve"><value>WINDOWS · 原生</value></data>
+  <data name="NewChecklist.PlaceholderText" xml:space="preserve"><value>新建清单</value></data>
+  <data name="SelectedChecklist.Header" xml:space="preserve"><value>当前清单</value></data>
+  <data name="RenameChecklist.Content" xml:space="preserve"><value>重命名</value></data>
+  <data name="DeleteChecklist.Content" xml:space="preserve"><value>删除</value></data>
+  <data name="RestoreTask.Content" xml:space="preserve"><value>恢复</value></data>
+  <data name="EmptyTrash.Content" xml:space="preserve"><value>清空回收站</value></data>
+  <data name="NewTodo.PlaceholderText" xml:space="preserve"><value>需要完成什么？</value></data>
+  <data name="AddTodo.Content" xml:space="preserve"><value>+ 添加</value></data>
+  <data name="CancelBatch.Content" xml:space="preserve"><value>取消</value></data>
+  <data name="MoveBatchToTrash.Content" xml:space="preserve"><value>移至回收站</value></data>
+  <data name="TaskInspector.Text" xml:space="preserve"><value>任务检查器</value></data>
+  <data name="TaskTitle.Header" xml:space="preserve"><value>标题</value></data>
+  <data name="TaskPriority.Header" xml:space="preserve"><value>优先级</value></data>
+  <data name="TaskDueDate.Header" xml:space="preserve"><value>截止日期</value></data>
+  <data name="TaskDueTime.Header" xml:space="preserve"><value>截止时间</value></data>
+  <data name="TaskRepeat.Header" xml:space="preserve"><value>重复</value></data>
+  <data name="MoveTarget.Header" xml:space="preserve"><value>移动到</value></data>
+  <data name="MoveTask.Content" xml:space="preserve"><value>移动</value></data>
+  <data name="AttachImage.Content" xml:space="preserve"><value>添加图片</value></data>
+  <data name="OpenImage.Content" xml:space="preserve"><value>打开图片</value></data>
+  <data name="RemoveImage.Content" xml:space="preserve"><value>移除图片</value></data>
+  <data name="SaveChanges.Content" xml:space="preserve"><value>保存更改</value></data>
+  <data name="AppearanceBehavior.Text" xml:space="preserve"><value>外观与行为</value></data>
+  <data name="Theme.Header" xml:space="preserve"><value>主题</value></data>
+  <data name="Language.Header" xml:space="preserve"><value>语言</value></data>
+  <data name="ShowDdl.Header" xml:space="preserve"><value>显示截止倒计时</value></data>
+  <data name="QuickDelete.Header" xml:space="preserve"><value>快速删除</value></data>
+  <data name="UpdatePrompts.Header" xml:space="preserve"><value>更新提示</value></data>
+  <data name="EnhancedAlarm.Header" xml:space="preserve"><value>增强型特高提醒</value></data>
+  <data name="WorkspaceDock.Text" xml:space="preserve"><value>工作区操作栏</value></data>
+  <data name="AddPlacement.Header" xml:space="preserve"><value>添加按钮位置</value></data>
+  <data name="DockLimitHelp.Text" xml:space="preserve"><value>最多选择四个操作。选择第五个时会移除最早选择的操作。</value></data>
+  <data name="Updates.Text" xml:space="preserve"><value>更新</value></data>
+  <data name="CheckUpdates.Content" xml:space="preserve"><value>检查更新</value></data>
+  <data name="OpenRelease.Content" xml:space="preserve"><value>打开发布页</value></data>
+  <data name="Cloud.Text" xml:space="preserve"><value>云端</value></data>
+  <data name="Email.Header" xml:space="preserve"><value>电子邮箱</value></data>
+  <data name="Password.Header" xml:space="preserve"><value>密码</value></data>
+  <data name="SignInRestore.Content" xml:space="preserve"><value>登录并恢复</value></data>
+  <data name="CreateAccount.Content" xml:space="preserve"><value>创建账户</value></data>
+  <data name="FirstSignInHelp.Text" xml:space="preserve"><value>首次登录会用云端数据替换这个全新的本地工作区。</value></data>
+  <data name="SyncNow.Content" xml:space="preserve"><value>立即同步</value></data>
+  <data name="SignOut.Content" xml:space="preserve"><value>退出登录</value></data>
+  <data name="ChangePasswordExpander.Header" xml:space="preserve"><value>更改密码</value></data>
+  <data name="CurrentPassword.Header" xml:space="preserve"><value>当前密码</value></data>
+  <data name="NewPassword.Header" xml:space="preserve"><value>新密码</value></data>
+  <data name="ConfirmPassword.Header" xml:space="preserve"><value>确认新密码</value></data>
+  <data name="ChangePassword.Content" xml:space="preserve"><value>更改密码</value></data>
+  <data name="SyncConflicts.Text" xml:space="preserve"><value>同步冲突</value></data>
+  <data name="KeepLocal.Content" xml:space="preserve"><value>保留本地版本</value></data>
+  <data name="KeepCloud.Content" xml:space="preserve"><value>保留云端版本</value></data>
+</root>

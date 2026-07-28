@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="PlatformSubtitle.Text" xml:space="preserve"><value>WINDOWS · НАТИВНО</value></data>
+  <data name="NewChecklist.PlaceholderText" xml:space="preserve"><value>НОВЫЙ СПИСОК</value></data>
+  <data name="SelectedChecklist.Header" xml:space="preserve"><value>ВЫБРАННЫЙ СПИСОК</value></data>
+  <data name="RenameChecklist.Content" xml:space="preserve"><value>ПЕРЕИМЕНОВАТЬ</value></data>
+  <data name="DeleteChecklist.Content" xml:space="preserve"><value>УДАЛИТЬ</value></data>
+  <data name="RestoreTask.Content" xml:space="preserve"><value>ВОССТАНОВИТЬ</value></data>
+  <data name="EmptyTrash.Content" xml:space="preserve"><value>ОЧИСТИТЬ КОРЗИНУ</value></data>
+  <data name="NewTodo.PlaceholderText" xml:space="preserve"><value>ЧТО НУЖНО СДЕЛАТЬ?</value></data>
+  <data name="AddTodo.Content" xml:space="preserve"><value>+ ДОБАВИТЬ</value></data>
+  <data name="CancelBatch.Content" xml:space="preserve"><value>ОТМЕНА</value></data>
+  <data name="MoveBatchToTrash.Content" xml:space="preserve"><value>В КОРЗИНУ</value></data>
+  <data name="TaskInspector.Text" xml:space="preserve"><value>РЕДАКТОР ЗАДАЧИ</value></data>
+  <data name="TaskTitle.Header" xml:space="preserve"><value>НАЗВАНИЕ</value></data>
+  <data name="TaskPriority.Header" xml:space="preserve"><value>ПРИОРИТЕТ</value></data>
+  <data name="TaskDueDate.Header" xml:space="preserve"><value>СРОК — ДАТА</value></data>
+  <data name="TaskDueTime.Header" xml:space="preserve"><value>СРОК — ВРЕМЯ</value></data>
+  <data name="TaskRepeat.Header" xml:space="preserve"><value>ПОВТОР</value></data>
+  <data name="MoveTarget.Header" xml:space="preserve"><value>ПЕРЕМЕСТИТЬ В</value></data>
+  <data name="MoveTask.Content" xml:space="preserve"><value>ПЕРЕМЕСТИТЬ</value></data>
+  <data name="AttachImage.Content" xml:space="preserve"><value>ПРИКРЕПИТЬ ИЗОБРАЖЕНИЕ</value></data>
+  <data name="OpenImage.Content" xml:space="preserve"><value>ОТКРЫТЬ ИЗОБРАЖЕНИЕ</value></data>
+  <data name="RemoveImage.Content" xml:space="preserve"><value>УДАЛИТЬ ИЗОБРАЖЕНИЕ</value></data>
+  <data name="SaveChanges.Content" xml:space="preserve"><value>СОХРАНИТЬ</value></data>
+  <data name="AppearanceBehavior.Text" xml:space="preserve"><value>ВИД И ПОВЕДЕНИЕ</value></data>
+  <data name="Theme.Header" xml:space="preserve"><value>ТЕМА</value></data>
+  <data name="Language.Header" xml:space="preserve"><value>ЯЗЫК</value></data>
+  <data name="ShowDdl.Header" xml:space="preserve"><value>ПОКАЗЫВАТЬ ОБРАТНЫЙ ОТСЧЁТ</value></data>
+  <data name="QuickDelete.Header" xml:space="preserve"><value>БЫСТРОЕ УДАЛЕНИЕ</value></data>
+  <data name="UpdatePrompts.Header" xml:space="preserve"><value>УВЕДОМЛЕНИЯ ОБ ОБНОВЛЕНИЯХ</value></data>
+  <data name="EnhancedAlarm.Header" xml:space="preserve"><value>УСИЛЕННОЕ ОПОВЕЩЕНИЕ X-HIGH</value></data>
+  <data name="WorkspaceDock.Text" xml:space="preserve"><value>ПАНЕЛЬ РАБОЧЕЙ ОБЛАСТИ</value></data>
+  <data name="AddPlacement.Header" xml:space="preserve"><value>ПОЛОЖЕНИЕ КНОПКИ ДОБАВЛЕНИЯ</value></data>
+  <data name="DockLimitHelp.Text" xml:space="preserve"><value>ВЫБЕРИТЕ ДО ЧЕТЫРЁХ ДЕЙСТВИЙ. ПЯТОЕ ЗАМЕНИТ САМОЕ СТАРОЕ.</value></data>
+  <data name="Updates.Text" xml:space="preserve"><value>ОБНОВЛЕНИЯ</value></data>
+  <data name="CheckUpdates.Content" xml:space="preserve"><value>ПРОВЕРИТЬ ОБНОВЛЕНИЯ</value></data>
+  <data name="OpenRelease.Content" xml:space="preserve"><value>ОТКРЫТЬ РЕЛИЗ</value></data>
+  <data name="Cloud.Text" xml:space="preserve"><value>ОБЛАКО</value></data>
+  <data name="Email.Header" xml:space="preserve"><value>ЭЛЕКТРОННАЯ ПОЧТА</value></data>
+  <data name="Password.Header" xml:space="preserve"><value>ПАРОЛЬ</value></data>
+  <data name="SignInRestore.Content" xml:space="preserve"><value>ВОЙТИ И ВОССТАНОВИТЬ</value></data>
+  <data name="CreateAccount.Content" xml:space="preserve"><value>СОЗДАТЬ АККАУНТ</value></data>
+  <data name="FirstSignInHelp.Text" xml:space="preserve"><value>ПРИ ПЕРВОМ ВХОДЕ НОВАЯ ЛОКАЛЬНАЯ ОБЛАСТЬ БУДЕТ ЗАМЕНЕНА ДАННЫМИ ИЗ ОБЛАКА.</value></data>
+  <data name="SyncNow.Content" xml:space="preserve"><value>СИНХРОНИЗИРОВАТЬ</value></data>
+  <data name="SignOut.Content" xml:space="preserve"><value>ВЫЙТИ</value></data>
+  <data name="ChangePasswordExpander.Header" xml:space="preserve"><value>ИЗМЕНИТЬ ПАРОЛЬ</value></data>
+  <data name="CurrentPassword.Header" xml:space="preserve"><value>ТЕКУЩИЙ ПАРОЛЬ</value></data>
+  <data name="NewPassword.Header" xml:space="preserve"><value>НОВЫЙ ПАРОЛЬ</value></data>
+  <data name="ConfirmPassword.Header" xml:space="preserve"><value>ПОДТВЕРДИТЕ НОВЫЙ ПАРОЛЬ</value></data>
+  <data name="ChangePassword.Content" xml:space="preserve"><value>ИЗМЕНИТЬ ПАРОЛЬ</value></data>
+  <data name="SyncConflicts.Text" xml:space="preserve"><value>КОНФЛИКТЫ СИНХРОНИЗАЦИИ</value></data>
+  <data name="KeepLocal.Content" xml:space="preserve"><value>ОСТАВИТЬ ЛОКАЛЬНУЮ</value></data>
+  <data name="KeepCloud.Content" xml:space="preserve"><value>ОСТАВИТЬ ОБЛАЧНУЮ</value></data>
+</root>

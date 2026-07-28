@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="PlatformSubtitle.Text" xml:space="preserve"><value>WINDOWS · NATIVO</value></data>
+  <data name="NewChecklist.PlaceholderText" xml:space="preserve"><value>NUEVA LISTA</value></data>
+  <data name="SelectedChecklist.Header" xml:space="preserve"><value>LISTA SELECCIONADA</value></data>
+  <data name="RenameChecklist.Content" xml:space="preserve"><value>RENOMBRAR</value></data>
+  <data name="DeleteChecklist.Content" xml:space="preserve"><value>ELIMINAR</value></data>
+  <data name="RestoreTask.Content" xml:space="preserve"><value>RESTAURAR</value></data>
+  <data name="EmptyTrash.Content" xml:space="preserve"><value>VACIAR PAPELERA</value></data>
+  <data name="NewTodo.PlaceholderText" xml:space="preserve"><value>¿QUÉ HAY QUE HACER?</value></data>
+  <data name="AddTodo.Content" xml:space="preserve"><value>+ AÑADIR</value></data>
+  <data name="CancelBatch.Content" xml:space="preserve"><value>CANCELAR</value></data>
+  <data name="MoveBatchToTrash.Content" xml:space="preserve"><value>MOVER A PAPELERA</value></data>
+  <data name="TaskInspector.Text" xml:space="preserve"><value>INSPECTOR DE TAREA</value></data>
+  <data name="TaskTitle.Header" xml:space="preserve"><value>TÍTULO</value></data>
+  <data name="TaskPriority.Header" xml:space="preserve"><value>PRIORIDAD</value></data>
+  <data name="TaskDueDate.Header" xml:space="preserve"><value>FECHA LÍMITE</value></data>
+  <data name="TaskDueTime.Header" xml:space="preserve"><value>HORA LÍMITE</value></data>
+  <data name="TaskRepeat.Header" xml:space="preserve"><value>REPETIR</value></data>
+  <data name="MoveTarget.Header" xml:space="preserve"><value>MOVER A</value></data>
+  <data name="MoveTask.Content" xml:space="preserve"><value>MOVER</value></data>
+  <data name="AttachImage.Content" xml:space="preserve"><value>ADJUNTAR IMAGEN</value></data>
+  <data name="OpenImage.Content" xml:space="preserve"><value>ABRIR IMAGEN</value></data>
+  <data name="RemoveImage.Content" xml:space="preserve"><value>QUITAR IMAGEN</value></data>
+  <data name="SaveChanges.Content" xml:space="preserve"><value>GUARDAR CAMBIOS</value></data>
+  <data name="AppearanceBehavior.Text" xml:space="preserve"><value>APARIENCIA Y COMPORTAMIENTO</value></data>
+  <data name="Theme.Header" xml:space="preserve"><value>TEMA</value></data>
+  <data name="Language.Header" xml:space="preserve"><value>IDIOMA</value></data>
+  <data name="ShowDdl.Header" xml:space="preserve"><value>MOSTRAR CUENTA REGRESIVA</value></data>
+  <data name="QuickDelete.Header" xml:space="preserve"><value>ELIMINACIÓN RÁPIDA</value></data>
+  <data name="UpdatePrompts.Header" xml:space="preserve"><value>AVISOS DE ACTUALIZACIÓN</value></data>
+  <data name="EnhancedAlarm.Header" xml:space="preserve"><value>ALARMA X-HIGH MEJORADA</value></data>
+  <data name="WorkspaceDock.Text" xml:space="preserve"><value>BARRA DEL ESPACIO DE TRABAJO</value></data>
+  <data name="AddPlacement.Header" xml:space="preserve"><value>POSICIÓN DEL BOTÓN AÑADIR</value></data>
+  <data name="DockLimitHelp.Text" xml:space="preserve"><value>ELIGE HASTA CUATRO ACCIONES. LA QUINTA SUSTITUYE A LA MÁS ANTIGUA.</value></data>
+  <data name="Updates.Text" xml:space="preserve"><value>ACTUALIZACIONES</value></data>
+  <data name="CheckUpdates.Content" xml:space="preserve"><value>BUSCAR ACTUALIZACIONES</value></data>
+  <data name="OpenRelease.Content" xml:space="preserve"><value>ABRIR VERSIÓN</value></data>
+  <data name="Cloud.Text" xml:space="preserve"><value>NUBE</value></data>
+  <data name="Email.Header" xml:space="preserve"><value>CORREO ELECTRÓNICO</value></data>
+  <data name="Password.Header" xml:space="preserve"><value>CONTRASEÑA</value></data>
+  <data name="SignInRestore.Content" xml:space="preserve"><value>INICIAR SESIÓN Y RESTAURAR</value></data>
+  <data name="CreateAccount.Content" xml:space="preserve"><value>CREAR CUENTA</value></data>
+  <data name="FirstSignInHelp.Text" xml:space="preserve"><value>EL PRIMER INICIO DE SESIÓN SUSTITUYE ESTE ESPACIO LOCAL NUEVO POR LOS DATOS DE LA NUBE.</value></data>
+  <data name="SyncNow.Content" xml:space="preserve"><value>SINCRONIZAR AHORA</value></data>
+  <data name="SignOut.Content" xml:space="preserve"><value>CERRAR SESIÓN</value></data>
+  <data name="ChangePasswordExpander.Header" xml:space="preserve"><value>CAMBIAR CONTRASEÑA</value></data>
+  <data name="CurrentPassword.Header" xml:space="preserve"><value>CONTRASEÑA ACTUAL</value></data>
+  <data name="NewPassword.Header" xml:space="preserve"><value>NUEVA CONTRASEÑA</value></data>
+  <data name="ConfirmPassword.Header" xml:space="preserve"><value>CONFIRMAR NUEVA CONTRASEÑA</value></data>
+  <data name="ChangePassword.Content" xml:space="preserve"><value>CAMBIAR CONTRASEÑA</value></data>
+  <data name="SyncConflicts.Text" xml:space="preserve"><value>CONFLICTOS DE SINCRONIZACIÓN</value></data>
+  <data name="KeepLocal.Content" xml:space="preserve"><value>CONSERVAR LOCAL</value></data>
+  <data name="KeepCloud.Content" xml:space="preserve"><value>CONSERVAR NUBE</value></data>
+</root>

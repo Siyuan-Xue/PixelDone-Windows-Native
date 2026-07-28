@@ -9,6 +9,7 @@ $solution = Join-Path $repositoryRoot 'PixelDone-Windows-Native.slnx'
 $appProject = Join-Path $repositoryRoot 'src\PixelDone.Windows\PixelDone.Windows.csproj'
 $publishDirectory = Join-Path $repositoryRoot 'artifacts\publish\win-x64'
 $installerDirectory = Join-Path $repositoryRoot 'artifacts\installer'
+$windowsAppSdkVersion = '2.3.1'
 
 $dotnetCommand = Get-Command dotnet.exe -ErrorAction SilentlyContinue
 if ($dotnetCommand) {
@@ -41,12 +42,50 @@ if ($LASTEXITCODE -ne 0) {
     throw 'dotnet publish failed.'
 }
 
+# Windows App SDK 2.3.1's unpackaged self-contained publish currently omits
+# this WinRT diagnostics resource even though AppNotificationManager loads it.
+# Recover the signed Microsoft binary from the restored official runtime MSIX.
+$nugetPackages = if ($env:NUGET_PACKAGES) {
+    $env:NUGET_PACKAGES
+} else {
+    Join-Path $env:USERPROFILE '.nuget\packages'
+}
+$runtimeFrameworkMsix = Join-Path $nugetPackages (
+    "microsoft.windowsappsdk.runtime\$windowsAppSdkVersion\tools\MSIX\" +
+    "win10-x64\Microsoft.WindowsAppRuntime.2.msix")
+$insightsResource = Join-Path $publishDirectory `
+    'Microsoft.WindowsAppRuntime.Insights.Resource.dll'
+if (-not (Test-Path $runtimeFrameworkMsix)) {
+    throw "The restored Windows App SDK runtime package is missing: $runtimeFrameworkMsix"
+}
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$runtimeArchive = [System.IO.Compression.ZipFile]::OpenRead($runtimeFrameworkMsix)
+try {
+    $entry = $runtimeArchive.GetEntry(
+        'Microsoft.WindowsAppRuntime.Insights.Resource.dll')
+    if (-not $entry) {
+        throw 'The Windows App SDK runtime MSIX has no Insights resource DLL.'
+    }
+    [System.IO.Compression.ZipFileExtensions]::ExtractToFile(
+        $entry,
+        $insightsResource,
+        $true)
+} finally {
+    $runtimeArchive.Dispose()
+}
+
 $publishedExecutable = Join-Path $publishDirectory 'PixelDone.exe'
 if (-not (Test-Path $publishedExecutable)) {
     throw "Publish did not produce $publishedExecutable"
 }
 
-$requiredWinUiResources = @('PixelDone.pri', 'App.xbf', 'MainWindow.xbf', 'MainPage.xbf')
+$requiredWinUiResources = @(
+    'PixelDone.pri',
+    'App.xbf',
+    'MainWindow.xbf',
+    'MainPage.xbf',
+    'Microsoft.WindowsAppRuntime.Insights.Resource.dll'
+)
 foreach ($winUiResource in $requiredWinUiResources) {
     $publishedWinUiResource = Join-Path $publishDirectory $winUiResource
     if (-not (Test-Path $publishedWinUiResource)) {

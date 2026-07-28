@@ -9,23 +9,36 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
-            <Color x:Key="PixelInkColor">#FF131313</Color>
-            <Color x:Key="PixelPaperColor">#FFF7F5F0</Color>
-            <Color x:Key="PixelPanelColor">#FFFFFFFF</Color>
-            <Color x:Key="PixelAccentColor">#FFD97757</Color>
-            <Color x:Key="PixelMutedColor">#FF77736C</Color>
-            <SolidColorBrush x:Key="PixelInkBrush" Color="{StaticResource PixelInkColor}" />
-            <SolidColorBrush x:Key="PixelPaperBrush" Color="{StaticResource PixelPaperColor}" />
-            <SolidColorBrush x:Key="PixelPanelBrush" Color="{StaticResource PixelPanelColor}" />
-            <SolidColorBrush x:Key="PixelAccentBrush" Color="{StaticResource PixelAccentColor}" />
-            <SolidColorBrush x:Key="PixelMutedBrush" Color="{StaticResource PixelMutedColor}" />
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="PixelInkBrush" Color="#FF131313" />
+                    <SolidColorBrush x:Key="PixelPaperBrush" Color="#FFF7F5F0" />
+                    <SolidColorBrush x:Key="PixelPanelBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="PixelAccentBrush" Color="#FFD97757" />
+                    <SolidColorBrush x:Key="PixelMutedBrush" Color="#FF77736C" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="PixelInkBrush" Color="#FFF3EFE7" />
+                    <SolidColorBrush x:Key="PixelPaperBrush" Color="#FF181716" />
+                    <SolidColorBrush x:Key="PixelPanelBrush" Color="#FF242220" />
+                    <SolidColorBrush x:Key="PixelAccentBrush" Color="#FFE58B6E" />
+                    <SolidColorBrush x:Key="PixelMutedBrush" Color="#FFB0ACA3" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="PixelInkBrush" Color="#FF131313" />
+                    <SolidColorBrush x:Key="PixelPaperBrush" Color="#FFF7F5F0" />
+                    <SolidColorBrush x:Key="PixelPanelBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="PixelAccentBrush" Color="#FFD97757" />
+                    <SolidColorBrush x:Key="PixelMutedBrush" Color="#FF77736C" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
 
             <Style x:Key="PixelButtonStyle" TargetType="Button">
                 <Setter Property="CornerRadius" Value="0" />
                 <Setter Property="BorderThickness" Value="2" />
-                <Setter Property="BorderBrush" Value="{StaticResource PixelInkBrush}" />
-                <Setter Property="Background" Value="{StaticResource PixelPanelBrush}" />
-                <Setter Property="Foreground" Value="{StaticResource PixelInkBrush}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource PixelInkBrush}" />
+                <Setter Property="Background" Value="{ThemeResource PixelPanelBrush}" />
+                <Setter Property="Foreground" Value="{ThemeResource PixelInkBrush}" />
                 <Setter Property="FontFamily" Value="Cascadia Mono" />
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="Padding" Value="14,8" />
@@ -34,8 +47,8 @@
             <Style x:Key="PixelTextBoxStyle" TargetType="TextBox">
                 <Setter Property="CornerRadius" Value="0" />
                 <Setter Property="BorderThickness" Value="2" />
-                <Setter Property="BorderBrush" Value="{StaticResource PixelInkBrush}" />
-                <Setter Property="Background" Value="{StaticResource PixelPanelBrush}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource PixelInkBrush}" />
+                <Setter Property="Background" Value="{ThemeResource PixelPanelBrush}" />
                 <Setter Property="FontFamily" Value="Cascadia Mono" />
             </Style>
         </ResourceDictionary>

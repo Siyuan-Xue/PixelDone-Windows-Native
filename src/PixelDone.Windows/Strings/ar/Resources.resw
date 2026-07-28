@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="PlatformSubtitle.Text" xml:space="preserve"><value>ويندوز · أصلي</value></data>
+  <data name="NewChecklist.PlaceholderText" xml:space="preserve"><value>قائمة جديدة</value></data>
+  <data name="SelectedChecklist.Header" xml:space="preserve"><value>القائمة المحددة</value></data>
+  <data name="RenameChecklist.Content" xml:space="preserve"><value>إعادة تسمية</value></data>
+  <data name="DeleteChecklist.Content" xml:space="preserve"><value>حذف</value></data>
+  <data name="RestoreTask.Content" xml:space="preserve"><value>استعادة</value></data>
+  <data name="EmptyTrash.Content" xml:space="preserve"><value>إفراغ سلة المهملات</value></data>
+  <data name="NewTodo.PlaceholderText" xml:space="preserve"><value>ما الذي يجب إنجازه؟</value></data>
+  <data name="AddTodo.Content" xml:space="preserve"><value>+ إضافة</value></data>
+  <data name="CancelBatch.Content" xml:space="preserve"><value>إلغاء</value></data>
+  <data name="MoveBatchToTrash.Content" xml:space="preserve"><value>نقل إلى سلة المهملات</value></data>
+  <data name="TaskInspector.Text" xml:space="preserve"><value>محرر المهمة</value></data>
+  <data name="TaskTitle.Header" xml:space="preserve"><value>العنوان</value></data>
+  <data name="TaskPriority.Header" xml:space="preserve"><value>الأولوية</value></data>
+  <data name="TaskDueDate.Header" xml:space="preserve"><value>تاريخ الاستحقاق</value></data>
+  <data name="TaskDueTime.Header" xml:space="preserve"><value>وقت الاستحقاق</value></data>
+  <data name="TaskRepeat.Header" xml:space="preserve"><value>التكرار</value></data>
+  <data name="MoveTarget.Header" xml:space="preserve"><value>نقل إلى</value></data>
+  <data name="MoveTask.Content" xml:space="preserve"><value>نقل</value></data>
+  <data name="AttachImage.Content" xml:space="preserve"><value>إرفاق صورة</value></data>
+  <data name="OpenImage.Content" xml:space="preserve"><value>فتح الصورة</value></data>
+  <data name="RemoveImage.Content" xml:space="preserve"><value>إزالة الصورة</value></data>
+  <data name="SaveChanges.Content" xml:space="preserve"><value>حفظ التغييرات</value></data>
+  <data name="AppearanceBehavior.Text" xml:space="preserve"><value>المظهر والسلوك</value></data>
+  <data name="Theme.Header" xml:space="preserve"><value>السمة</value></data>
+  <data name="Language.Header" xml:space="preserve"><value>اللغة</value></data>
+  <data name="ShowDdl.Header" xml:space="preserve"><value>إظهار العد التنازلي</value></data>
+  <data name="QuickDelete.Header" xml:space="preserve"><value>الحذف السريع</value></data>
+  <data name="UpdatePrompts.Header" xml:space="preserve"><value>تنبيهات التحديث</value></data>
+  <data name="EnhancedAlarm.Header" xml:space="preserve"><value>تنبيه X-HIGH المحسّن</value></data>
+  <data name="WorkspaceDock.Text" xml:space="preserve"><value>شريط مساحة العمل</value></data>
+  <data name="AddPlacement.Header" xml:space="preserve"><value>موضع زر الإضافة</value></data>
+  <data name="DockLimitHelp.Text" xml:space="preserve"><value>اختر حتى أربعة إجراءات. اختيار إجراء خامس يزيل الأقدم.</value></data>
+  <data name="Updates.Text" xml:space="preserve"><value>التحديثات</value></data>
+  <data name="CheckUpdates.Content" xml:space="preserve"><value>التحقق من التحديثات</value></data>
+  <data name="OpenRelease.Content" xml:space="preserve"><value>فتح صفحة الإصدار</value></data>
+  <data name="Cloud.Text" xml:space="preserve"><value>السحابة</value></data>
+  <data name="Email.Header" xml:space="preserve"><value>البريد الإلكتروني</value></data>
+  <data name="Password.Header" xml:space="preserve"><value>كلمة المرور</value></data>
+  <data name="SignInRestore.Content" xml:space="preserve"><value>تسجيل الدخول والاستعادة</value></data>
+  <data name="CreateAccount.Content" xml:space="preserve"><value>إنشاء حساب</value></data>
+  <data name="FirstSignInHelp.Text" xml:space="preserve"><value>يستبدل تسجيل الدخول الأول مساحة العمل المحلية الجديدة ببيانات السحابة.</value></data>
+  <data name="SyncNow.Content" xml:space="preserve"><value>المزامنة الآن</value></data>
+  <data name="SignOut.Content" xml:space="preserve"><value>تسجيل الخروج</value></data>
+  <data name="ChangePasswordExpander.Header" xml:space="preserve"><value>تغيير كلمة المرور</value></data>
+  <data name="CurrentPassword.Header" xml:space="preserve"><value>كلمة المرور الحالية</value></data>
+  <data name="NewPassword.Header" xml:space="preserve"><value>كلمة المرور الجديدة</value></data>
+  <data name="ConfirmPassword.Header" xml:space="preserve"><value>تأكيد كلمة المرور الجديدة</value></data>
+  <data name="ChangePassword.Content" xml:space="preserve"><value>تغيير كلمة المرور</value></data>
+  <data name="SyncConflicts.Text" xml:space="preserve"><value>تعارضات المزامنة</value></data>
+  <data name="KeepLocal.Content" xml:space="preserve"><value>الاحتفاظ بالمحلي</value></data>
+  <data name="KeepCloud.Content" xml:space="preserve"><value>الاحتفاظ بالسحابة</value></data>
+</root>

@@ -24,5 +24,18 @@ Tauri UI and Windows adapter code are reference material, not dependencies.
 - Native Windows behavior can move with the Windows App SDK without a web compatibility layer.
 - The Windows and Linux clients have separate presentation and operating-system adapters.
 - Cloud schema 3.2, not a shared GUI framework, is the cross-platform contract.
-- Existing Tauri local data is not migrated; authenticated users will restore from cloud.
+- PixelDone 4.0 is a product version, not a local- or cloud-schema migration. The installer
+  removes a detected Tauri installation and its local data instead of importing old SQLite,
+  WebView, attachment-cache, or credential state.
+- The native client stores its clean baseline under
+  `%LOCALAPPDATA%\com.milesxue.pixeldone.windows\data\pixeldone.sqlite3`; it never writes
+  user data into either the legacy `%LOCALAPPDATA%\PixelDone` program directory or the new
+  `%LOCALAPPDATA%\Programs\PixelDone` program directory.
+- Authenticated users restore their state from Supabase schema 3.2 with an initial cursor-zero
+  pull. Users may also start a fresh local-only workspace before signing in.
 - Unsigned installers show normal Windows publisher/reputation warnings until signing is added.
+- `AppNotificationManager` remains optional at runtime as Microsoft recommends for an
+  unpackaged self-contained app. The 2.3.1 publish omission of its Insights resource is filled
+  deterministically from the signed official runtime MSIX during `scripts/build.ps1`.
+- The beta is feature-complete locally, but production Supabase 3.2 and published-release
+  update flows remain external release gates documented in `PRODUCT_PARITY.md`.

@@ -8,4 +8,14 @@
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.10" />
     <PackageReference Include="SQLitePCLRaw.bundle_winsqlite3" Version="2.1.11" />
   </ItemGroup>
+  <ItemGroup Condition="'$(PIXELDONE_SUPABASE_URL)' != ''">
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>PixelDoneSupabaseUrl</_Parameter1>
+      <_Parameter2>$(PIXELDONE_SUPABASE_URL)</_Parameter2>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>PixelDoneSupabasePublishableKey</_Parameter1>
+      <_Parameter2>$(PIXELDONE_SUPABASE_PUBLISHABLE_KEY)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

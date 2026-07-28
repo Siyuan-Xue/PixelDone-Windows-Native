@@ -5,26 +5,28 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:PixelDone.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{StaticResource PixelPaperBrush}"
+    Background="{ThemeResource PixelPaperBrush}"
     DataContext="{x:Bind ViewModel, Mode=OneWay}"
+    FlowDirection="{Binding ContentFlowDirection}"
+    RequestedTheme="{Binding RequestedElementTheme}"
     mc:Ignorable="d">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260" />
+            <ColumnDefinition Width="280" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Border
             Grid.Column="0"
-            Padding="24"
-            Background="{StaticResource PixelInkBrush}">
+            Padding="22"
+            Background="{ThemeResource PixelInkBrush}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
@@ -36,49 +38,90 @@
                         Foreground="White"
                         Text="PIXELDONE" />
                     <TextBlock
+                        x:Uid="PlatformSubtitle"
                         FontFamily="Cascadia Mono"
                         FontSize="11"
-                        Foreground="{StaticResource PixelAccentBrush}"
-                        Text="WINDOWS · NATIVE 4.0" />
+                        Foreground="{ThemeResource PixelAccentBrush}"
+                        Text="WINDOWS · NATIVE" />
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Margin="0,42,0,0" Spacing="10">
-                    <Button
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Left"
-                        Background="{StaticResource PixelAccentBrush}"
-                        BorderBrush="White"
-                        BorderThickness="2"
-                        CornerRadius="0"
-                        FontFamily="Cascadia Mono"
-                        FontWeight="SemiBold"
-                        Foreground="{StaticResource PixelInkBrush}"
-                        Content="■  MAIN" />
-                    <Button
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent"
-                        BorderBrush="#FF555555"
-                        BorderThickness="2"
-                        CornerRadius="0"
-                        FontFamily="Cascadia Mono"
-                        Foreground="White"
-                        IsEnabled="False"
-                        Content="□  TRASH · NEXT" />
-                    <Button
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent"
-                        BorderBrush="#FF555555"
-                        BorderThickness="2"
-                        CornerRadius="0"
-                        FontFamily="Cascadia Mono"
-                        Foreground="White"
-                        IsEnabled="False"
-                        Content="□  SETTINGS · NEXT" />
-                </StackPanel>
+                <ListView
+                    Grid.Row="1"
+                    Margin="0,32,0,16"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ItemsSource="{Binding Checklists}"
+                    SelectedItem="{Binding SelectedChecklist, Mode=TwoWay}"
+                    SelectionMode="Single">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="Padding" Value="2" />
+                            <Setter Property="Margin" Value="0,0,0,6" />
+                            <Setter Property="CornerRadius" Value="0" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Padding="12,10"
+                                BorderBrush="#FF666666"
+                                BorderThickness="2">
+                                <TextBlock
+                                    FontFamily="Cascadia Mono"
+                                    FontWeight="SemiBold"
+                                    Foreground="White"
+                                    Text="{Binding DisplayName}" />
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <StackPanel Grid.Row="2" Spacing="8">
+                    <Grid ColumnSpacing="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            x:Uid="NewChecklist"
+                            PlaceholderText="NEW LIST"
+                            Style="{StaticResource PixelTextBoxStyle}"
+                            Text="{Binding NewChecklistName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Grid.Column="1"
+                            Style="{StaticResource PixelButtonStyle}"
+                            Click="AddChecklist_Click"
+                            Content="+" />
+                    </Grid>
+                    <TextBox
+                        x:Uid="SelectedChecklist"
+                        Header="SELECTED LIST"
+                        IsEnabled="{Binding CanEditChecklist}"
+                        Style="{StaticResource PixelTextBoxStyle}"
+                        Text="{Binding ChecklistEditorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Grid ColumnSpacing="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            x:Uid="RenameChecklist"
+                            IsEnabled="{Binding CanEditChecklist}"
+                            Style="{StaticResource PixelButtonStyle}"
+                            Click="RenameChecklist_Click"
+                            Content="RENAME" />
+                        <Button
+                            x:Uid="DeleteChecklist"
+                            Grid.Column="1"
+                            IsEnabled="{Binding CanEditChecklist}"
+                            Style="{StaticResource PixelButtonStyle}"
+                            Click="DeleteChecklist_Click"
+                            Content="DELETE" />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Margin="0,18,0,0" Spacing="8">
                     <Rectangle Height="2" Fill="#FF555555" />
                     <TextBlock
                         FontFamily="Cascadia Mono"
@@ -90,14 +133,13 @@
                         FontFamily="Cascadia Mono"
                         FontSize="10"
                         Foreground="#FF777777"
-                        Text="SCHEMA 3.2 · LOCAL FIRST" />
+                        Text="CLOUD 3.2 · LOCAL FIRST" />
                 </StackPanel>
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Padding="32,26,32,32" RowSpacing="20">
+        <Grid Grid.Column="1" Padding="30,24,30,30" RowSpacing="18">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -107,76 +149,141 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel>
-                    <TextBlock
-                        FontFamily="Cascadia Mono"
-                        FontSize="30"
-                        FontWeight="Bold"
-                        Foreground="{StaticResource PixelInkBrush}"
-                        Text="TODAY" />
-                    <TextBlock
-                        Margin="1,2,0,0"
-                        FontFamily="Cascadia Mono"
-                        FontSize="11"
-                        Foreground="{StaticResource PixelMutedBrush}"
-                        Text="{Binding OpenCountLabel}" />
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        x:Uid="NavigateBack"
+                        IsEnabled="{Binding CanNavigateBack}"
+                        Style="{StaticResource PixelButtonStyle}"
+                        Click="NavigateBack_Click"
+                        Content="←" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock
+                            FontFamily="Cascadia Mono"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            Foreground="{ThemeResource PixelInkBrush}"
+                            Text="{Binding PageTitle}" />
+                        <TextBlock
+                            Margin="1,2,0,0"
+                            FontFamily="Cascadia Mono"
+                            FontSize="11"
+                            Foreground="{ThemeResource PixelMutedBrush}"
+                            Text="{Binding OpenCountLabel}" />
+                    </StackPanel>
+                </Grid>
+                <StackPanel
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="10"
+                    Visibility="{Binding TaskPageVisibility}">
+                    <Button
+                        x:Uid="RestoreTask"
+                        Visibility="{Binding TrashActionVisibility}"
+                        Style="{StaticResource PixelButtonStyle}"
+                        Click="RestoreTodo_Click"
+                        Content="RESTORE" />
+                    <Button
+                        x:Uid="EmptyTrash"
+                        Visibility="{Binding TrashActionVisibility}"
+                        Style="{StaticResource PixelButtonStyle}"
+                        Click="PurgeTrash_Click"
+                        Content="EMPTY TRASH" />
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
-                    <ToggleSwitch
-                        Header="HIDE DONE"
-                        FontFamily="Cascadia Mono"
-                        IsOn="{Binding HideCompleted, Mode=TwoWay}" />
+            </Grid>
+
+            <Grid Grid.Row="1" Visibility="{Binding TaskPageVisibility}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid
+                    Margin="0,0,0,16"
+                    ColumnSpacing="10"
+                    Visibility="{Binding NormalActionVisibility}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="126" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        x:Name="NewTodoTextBox"
+                        x:Uid="NewTodo"
+                        PlaceholderText="WHAT NEEDS TO BE DONE?"
+                        Style="{StaticResource PixelTextBoxStyle}"
+                        Text="{Binding NewTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        KeyDown="NewTodoTextBox_KeyDown" />
                     <ComboBox
-                        Width="130"
-                        Header="SORT"
+                        Grid.Column="1"
                         CornerRadius="0"
                         FontFamily="Cascadia Mono"
-                        ItemsSource="{Binding SortOptions}"
-                        SelectedItem="{Binding SortMode, Mode=TwoWay}" />
-                </StackPanel>
-            </Grid>
+                        ItemsSource="{Binding Priorities}"
+                        SelectedItem="{Binding NewPriority, Mode=TwoWay}" />
+                    <Button
+                        x:Uid="AddTodo"
+                        Grid.Column="2"
+                        Style="{StaticResource PixelButtonStyle}"
+                        Background="{ThemeResource PixelAccentBrush}"
+                        Click="AddTodo_Click"
+                        Content="+ ADD" />
+                </Grid>
 
-            <Grid Grid.Row="1" ColumnSpacing="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="126" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox
-                    x:Name="NewTodoTextBox"
-                    PlaceholderText="WHAT NEEDS TO BE DONE?"
-                    Style="{StaticResource PixelTextBoxStyle}"
-                    Text="{Binding NewTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    KeyDown="NewTodoTextBox_KeyDown" />
-                <ComboBox
-                    Grid.Column="1"
-                    CornerRadius="0"
-                    FontFamily="Cascadia Mono"
-                    ItemsSource="{Binding Priorities}"
-                    SelectedItem="{Binding NewPriority, Mode=TwoWay}" />
-                <Button
-                    Grid.Column="2"
-                    Style="{StaticResource PixelButtonStyle}"
-                    Background="{StaticResource PixelAccentBrush}"
-                    Click="AddTodo_Click"
-                    Content="+ ADD" />
-            </Grid>
+                <Grid Grid.Row="1" ColumnSpacing="18">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" MinWidth="420" />
+                        <ColumnDefinition Width="2*" MinWidth="310" />
+                    </Grid.ColumnDefinitions>
 
-            <Grid Grid.Row="2" ColumnSpacing="20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" MinWidth="420" />
-                    <ColumnDefinition Width="2*" MinWidth="310" />
-                </Grid.ColumnDefinitions>
-
-                <Border
-                    Background="{StaticResource PixelPanelBrush}"
-                    BorderBrush="{StaticResource PixelInkBrush}"
-                    BorderThickness="2">
-                    <Grid>
-                        <ListView
-                            ItemsSource="{Binding Todos}"
-                            SelectedItem="{Binding SelectedTodo, Mode=TwoWay}"
-                            SelectionMode="Single">
+                    <Border
+                        Background="{ThemeResource PixelPanelBrush}"
+                        BorderBrush="{ThemeResource PixelInkBrush}"
+                        BorderThickness="2">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid
+                                Padding="10"
+                                ColumnSpacing="8"
+                                Background="{ThemeResource PixelPaperBrush}"
+                                Visibility="{Binding BatchDeleteVisibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontFamily="Cascadia Mono"
+                                    FontWeight="Bold"
+                                    Text="{Binding BatchSelectionLabel}" />
+                                <Button
+                                    x:Uid="CancelBatch"
+                                    Grid.Column="1"
+                                    Style="{StaticResource PixelButtonStyle}"
+                                    Click="CancelBatchDelete_Click"
+                                    Content="CANCEL" />
+                                <Button
+                                    x:Uid="MoveBatchToTrash"
+                                    Grid.Column="2"
+                                    Style="{StaticResource PixelButtonStyle}"
+                                    Background="{ThemeResource PixelAccentBrush}"
+                                    Click="DeleteBatch_Click"
+                                    Content="MOVE TO TRASH" />
+                            </Grid>
+                            <ListView
+                                x:Name="TodoList"
+                                Grid.Row="1"
+                                ItemsSource="{Binding Todos}"
+                                SelectedItem="{Binding SelectedTodo, Mode=TwoWay}"
+                                SelectionChanged="TodoList_SelectionChanged"
+                                SelectionMode="{Binding TodoSelectionMode}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -188,14 +295,14 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid
-                                        MinHeight="72"
-                                        Padding="16,10"
-                                        BorderBrush="#FFE1DDD4"
+                                        MinHeight="76"
+                                        Padding="14,10"
+                                        BorderBrush="{ThemeResource PixelMutedBrush}"
                                         BorderThickness="0,0,0,1"
-                                        ColumnSpacing="12"
+                                        ColumnSpacing="10"
                                         Opacity="{Binding ContentOpacity}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="38" />
+                                            <ColumnDefinition Width="36" />
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
@@ -205,121 +312,468 @@
                                             Padding="0"
                                             VerticalAlignment="Center"
                                             Background="Transparent"
-                                            BorderBrush="{StaticResource PixelInkBrush}"
+                                            BorderBrush="{ThemeResource PixelInkBrush}"
                                             BorderThickness="2"
                                             CornerRadius="0"
                                             FontWeight="Bold"
                                             Content="{Binding CompletionGlyph}"
                                             Click="ToggleTodo_Click" />
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
                                             <TextBlock
                                                 FontFamily="Cascadia Mono"
                                                 FontSize="15"
                                                 FontWeight="SemiBold"
-                                                Foreground="{StaticResource PixelInkBrush}"
                                                 Text="{Binding Title}"
                                                 TextTrimming="CharacterEllipsis" />
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock
                                                     FontFamily="Cascadia Mono"
                                                     FontSize="10"
-                                                    Foreground="{StaticResource PixelMutedBrush}"
+                                                    Foreground="{ThemeResource PixelMutedBrush}"
                                                     Text="{Binding DueDisplay}" />
                                                 <TextBlock
                                                     FontFamily="Cascadia Mono"
                                                     FontSize="10"
-                                                    Foreground="{StaticResource PixelMutedBrush}"
+                                                    Foreground="{ThemeResource PixelMutedBrush}"
                                                     Text="{Binding RepeatDisplay}" />
                                             </StackPanel>
+                                            <TextBlock
+                                                FontFamily="Cascadia Mono"
+                                                FontSize="9"
+                                                Foreground="{ThemeResource PixelMutedBrush}"
+                                                Text="{Binding TrashOrigin}" />
                                         </StackPanel>
                                         <Border
                                             Grid.Column="2"
                                             Padding="7,3"
                                             VerticalAlignment="Center"
-                                            Background="{StaticResource PixelPaperBrush}"
-                                            BorderBrush="{StaticResource PixelInkBrush}"
-                                            BorderThickness="1">
+                                            Background="{ThemeResource PixelPaperBrush}"
+                                            BorderBrush="{ThemeResource PixelInkBrush}"
+                                            BorderThickness="1"
+                                            Visibility="{Binding PriorityVisibility}">
                                             <TextBlock
                                                 FontFamily="Cascadia Mono"
                                                 FontSize="9"
                                                 FontWeight="Bold"
                                                 Text="{Binding PriorityLabel}" />
                                         </Border>
+                                        <Button
+                                            x:Uid="QuickDeleteTask"
+                                            Grid.Column="2"
+                                            Width="36"
+                                            Height="36"
+                                            Padding="0"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource PixelButtonStyle}"
+                                            Visibility="{Binding QuickDeleteVisibility}"
+                                            Click="QuickDeleteTodo_Click"
+                                            Content="×" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            </ListView>
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        Padding="20"
+                        Background="{ThemeResource PixelPanelBrush}"
+                        BorderBrush="{ThemeResource PixelInkBrush}"
+                        BorderThickness="2">
+                        <StackPanel Spacing="12">
+                            <TextBlock
+                                x:Uid="TaskInspector"
+                                FontFamily="Cascadia Mono"
+                                FontSize="17"
+                                FontWeight="Bold"
+                                Text="TASK INSPECTOR" />
+                            <Rectangle Height="2" Fill="{ThemeResource PixelInkBrush}" />
+                            <TextBox
+                                x:Uid="TaskTitle"
+                                Header="TITLE"
+                                IsEnabled="{Binding HasSelection}"
+                                Style="{StaticResource PixelTextBoxStyle}"
+                                Text="{Binding EditorTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextWrapping="Wrap" />
+                            <ComboBox
+                                x:Uid="TaskPriority"
+                                Header="PRIORITY"
+                                CornerRadius="0"
+                                IsEnabled="{Binding HasSelection}"
+                                ItemsSource="{Binding Priorities}"
+                                SelectedItem="{Binding EditorPriority, Mode=TwoWay}" />
+                            <DatePicker
+                                x:Uid="TaskDueDate"
+                                Header="DUE DATE"
+                                CornerRadius="0"
+                                IsEnabled="{Binding HasSelection}"
+                                Date="{Binding EditorDueDate, Mode=TwoWay}" />
+                            <TimePicker
+                                x:Uid="TaskDueTime"
+                                Header="DUE TIME"
+                                CornerRadius="0"
+                                IsEnabled="{Binding HasSelection}"
+                                Time="{Binding EditorDueTime, Mode=TwoWay}" />
+                            <ComboBox
+                                x:Uid="TaskRepeat"
+                                Header="REPEAT"
+                                CornerRadius="0"
+                                IsEnabled="{Binding HasSelection}"
+                                ItemsSource="{Binding RepeatOptions}"
+                                SelectedItem="{Binding EditorRepeat, Mode=TwoWay}" />
+                            <Grid ColumnSpacing="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ComboBox
+                                    x:Uid="MoveTarget"
+                                    Header="MOVE TO"
+                                    DisplayMemberPath="Name"
+                                    IsEnabled="{Binding HasSelection}"
+                                    ItemsSource="{Binding MoveTargets}"
+                                    SelectedItem="{Binding SelectedMoveTarget, Mode=TwoWay}" />
+                                <Button
+                                    x:Uid="MoveTask"
+                                    Grid.Column="1"
+                                    VerticalAlignment="Bottom"
+                                    IsEnabled="{Binding HasSelection}"
+                                    Style="{StaticResource PixelButtonStyle}"
+                                    Click="MoveTodo_Click"
+                                    Content="MOVE" />
+                            </Grid>
+                            <Border
+                                Height="160"
+                                Background="{ThemeResource PixelPanelBrush}"
+                                BorderBrush="{ThemeResource PixelInkBrush}"
+                                BorderThickness="1"
+                                Visibility="{Binding AttachmentVisibility}">
+                                <Image
+                                    Source="{Binding AttachmentPreview}"
+                                    Stretch="UniformToFill" />
+                            </Border>
+                            <Button
+                                x:Uid="AttachImage"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="{Binding HasSelection}"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Visibility="{Binding NoAttachmentVisibility}"
+                                Click="AttachImage_Click"
+                                Content="ATTACH IMAGE" />
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Spacing="8"
+                                Visibility="{Binding AttachmentVisibility}">
+                                <Button
+                                    x:Uid="OpenImage"
+                                    Style="{StaticResource PixelButtonStyle}"
+                                    Click="OpenImage_Click"
+                                    Content="OPEN IMAGE" />
+                                <Button
+                                    x:Uid="RemoveImage"
+                                    Style="{StaticResource PixelButtonStyle}"
+                                    Click="RemoveImage_Click"
+                                    Content="REMOVE IMAGE" />
+                            </StackPanel>
+                            <Button
+                                x:Uid="SaveChanges"
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="{Binding HasSelection}"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Background="{ThemeResource PixelAccentBrush}"
+                                Click="SaveTodo_Click"
+                                Content="SAVE CHANGES" />
+                            <Button
+                                HorizontalAlignment="Stretch"
+                                IsEnabled="{Binding HasSelection}"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Click="DeleteTodo_Click"
+                                Content="{Binding DeleteActionLabel}" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <ItemsControl
+                    Grid.Row="2"
+                    Margin="0,14,0,0"
+                    HorizontalAlignment="Center"
+                    ItemsSource="{Binding DockItems}"
+                    Visibility="{Binding NormalActionVisibility}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="8" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button
+                                MinWidth="92"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Click="DockAction_Click"
+                                Content="{Binding Label}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" Visibility="{Binding SettingsPageVisibility}">
+                <StackPanel MaxWidth="720" HorizontalAlignment="Left" Spacing="18">
+                    <TextBlock
+                        x:Uid="AppearanceBehavior"
+                        FontFamily="Cascadia Mono"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="APPEARANCE &amp; BEHAVIOR" />
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="260" />
+                            <ColumnDefinition Width="320" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox
+                            x:Uid="Theme"
+                            Header="THEME"
+                            ItemsSource="{Binding ThemeOptions}"
+                            SelectedItem="{Binding Theme, Mode=TwoWay}" />
+                        <ComboBox
+                            x:Uid="Language"
+                            Grid.Column="1"
+                            Header="LANGUAGE"
+                            DisplayMemberPath="Label"
+                            ItemsSource="{Binding LanguageOptions}"
+                            SelectedItem="{Binding SelectedLanguageChoice, Mode=TwoWay}" />
+                    </Grid>
+                    <ToggleSwitch x:Uid="ShowDdl" Header="SHOW DDL COUNTDOWN" IsOn="{Binding ShowDdl, Mode=TwoWay}" />
+                    <ToggleSwitch x:Uid="QuickDelete" Header="QUICK DELETE" IsOn="{Binding QuickDelete, Mode=TwoWay}" />
+                    <ToggleSwitch x:Uid="UpdatePrompts" Header="UPDATE PROMPTS" IsOn="{Binding UpdatePrompts, Mode=TwoWay}" />
+                    <ToggleSwitch
+                        x:Uid="EnhancedAlarm"
+                        Header="ENHANCED X-HIGH ALARM"
+                        IsOn="{Binding EnhancedXHighAlarm, Mode=TwoWay}" />
+                    <Rectangle Height="2" Fill="{ThemeResource PixelInkBrush}" />
+                    <TextBlock
+                        x:Uid="WorkspaceDock"
+                        FontFamily="Cascadia Mono"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="WORKSPACE DOCK" />
+                    <ComboBox
+                        x:Uid="AddPlacement"
+                        Header="ADD BUTTON PLACEMENT"
+                        ItemsSource="{Binding DockPlacementOptions}"
+                        SelectedItem="{Binding DockPlusPlacement, Mode=TwoWay}" />
+                    <TextBlock
+                        x:Uid="DockLimitHelp"
+                        Foreground="{ThemeResource PixelMutedBrush}"
+                        Text="CHOOSE UP TO FOUR ACTIONS. CHOOSING A FIFTH REMOVES THE OLDEST."
+                        TextWrapping="Wrap" />
+                    <ListView
+                        ItemsSource="{Binding DockChoices}"
+                        SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="4" ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="36" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontFamily="Cascadia Mono"
+                                        Text="{Binding OrderLabel}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        FontFamily="Cascadia Mono"
+                                        Text="{Binding Label}" />
+                                    <Button
+                                        Grid.Column="2"
+                                        Style="{StaticResource PixelButtonStyle}"
+                                        Click="ToggleDockAction_Click"
+                                        Content="{Binding IsSelected}" />
+                                    <Button
+                                        Grid.Column="3"
+                                        IsEnabled="{Binding CanMoveUp}"
+                                        Style="{StaticResource PixelButtonStyle}"
+                                        Click="MoveDockActionUp_Click"
+                                        Content="↑" />
+                                    <Button
+                                        Grid.Column="4"
+                                        IsEnabled="{Binding CanMoveDown}"
+                                        Style="{StaticResource PixelButtonStyle}"
+                                        Click="MoveDockActionDown_Click"
+                                        Content="↓" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Rectangle Height="2" Fill="{ThemeResource PixelInkBrush}" />
+                    <TextBlock
+                        x:Uid="Updates"
+                        FontFamily="Cascadia Mono"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="UPDATES" />
+                    <TextBlock
+                        Foreground="{ThemeResource PixelMutedBrush}"
+                        Text="{Binding UpdateMessage}"
+                        TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button
+                            x:Uid="CheckUpdates"
+                            Style="{StaticResource PixelButtonStyle}"
+                            Click="CheckUpdate_Click"
+                            Content="CHECK FOR UPDATES" />
+                        <Button
+                            x:Uid="OpenRelease"
+                            Style="{StaticResource PixelButtonStyle}"
+                            Background="{ThemeResource PixelAccentBrush}"
+                            Visibility="{Binding UpdateAvailableVisibility}"
+                            Click="OpenRelease_Click"
+                            Content="OPEN RELEASE" />
+                    </StackPanel>
+                    <Rectangle Height="2" Fill="{ThemeResource PixelInkBrush}" />
+                    <TextBlock
+                        x:Uid="Cloud"
+                        FontFamily="Cascadia Mono"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="CLOUD" />
+                    <TextBlock
+                        Foreground="{ThemeResource PixelMutedBrush}"
+                        Text="{Binding CloudMessage}"
+                        TextWrapping="Wrap" />
+                    <StackPanel
+                        Spacing="10"
+                        Visibility="{Binding CloudSignedOutVisibility}">
+                        <TextBox
+                            x:Uid="Email"
+                            Header="EMAIL"
+                            InputScope="EmailSmtpAddress"
+                            Style="{StaticResource PixelTextBoxStyle}"
+                            Text="{Binding CloudEmail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <PasswordBox
+                            x:Name="CloudPasswordBox"
+                            x:Uid="Password"
+                            Header="PASSWORD"
+                            PasswordRevealMode="Peek" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button
+                                x:Uid="SignInRestore"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Background="{ThemeResource PixelAccentBrush}"
+                                Click="SignIn_Click"
+                                Content="SIGN IN &amp; RESTORE" />
+                            <Button
+                                x:Uid="CreateAccount"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Click="SignUp_Click"
+                                Content="CREATE ACCOUNT" />
+                        </StackPanel>
+                        <TextBlock
+                            x:Uid="FirstSignInHelp"
+                            Foreground="{ThemeResource PixelMutedBrush}"
+                            Text="FIRST SIGN-IN REPLACES THIS NEW LOCAL WORKSPACE WITH CLOUD DATA."
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel
+                        Spacing="10"
+                        Visibility="{Binding CloudSignedInVisibility}">
+                        <TextBlock
+                            FontFamily="Cascadia Mono"
+                            Text="{Binding CloudAccount}" />
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button
+                                x:Uid="SyncNow"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Background="{ThemeResource PixelAccentBrush}"
+                                Click="SyncNow_Click"
+                                Content="SYNC NOW" />
+                            <Button
+                                x:Uid="SignOut"
+                                Style="{StaticResource PixelButtonStyle}"
+                                Click="SignOut_Click"
+                                Content="SIGN OUT" />
+                        </StackPanel>
+                        <Expander x:Uid="ChangePasswordExpander" Header="CHANGE PASSWORD">
+                            <StackPanel Padding="0,10,0,0" Spacing="8">
+                                <PasswordBox
+                                    x:Name="CurrentPasswordBox"
+                                    x:Uid="CurrentPassword"
+                                    Header="CURRENT PASSWORD"
+                                    PasswordRevealMode="Peek" />
+                                <PasswordBox
+                                    x:Name="NewPasswordBox"
+                                    x:Uid="NewPassword"
+                                    Header="NEW PASSWORD"
+                                    PasswordRevealMode="Peek" />
+                                <PasswordBox
+                                    x:Name="ConfirmPasswordBox"
+                                    x:Uid="ConfirmPassword"
+                                    Header="CONFIRM NEW PASSWORD"
+                                    PasswordRevealMode="Peek" />
+                                <Button
+                                    x:Uid="ChangePassword"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource PixelButtonStyle}"
+                                    Click="ChangePassword_Click"
+                                    Content="CHANGE PASSWORD" />
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
+                    <StackPanel
+                        Spacing="8"
+                        Visibility="{Binding ConflictVisibility}">
+                        <TextBlock
+                            x:Uid="SyncConflicts"
+                            FontFamily="Cascadia Mono"
+                            FontWeight="Bold"
+                            Text="SYNC CONFLICTS" />
+                        <ListView
+                            ItemsSource="{Binding Conflicts}"
+                            SelectionMode="None">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        Padding="8"
+                                        ColumnSpacing="8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock
+                                                FontFamily="Cascadia Mono"
+                                                FontWeight="SemiBold"
+                                                Text="{Binding RecordType}" />
+                                            <TextBlock
+                                                FontFamily="Cascadia Mono"
+                                                FontSize="10"
+                                                Text="{Binding LocalId}" />
+                                        </StackPanel>
+                                        <Button
+                                            x:Uid="KeepLocal"
+                                            Grid.Column="1"
+                                            Style="{StaticResource PixelButtonStyle}"
+                                            Click="KeepLocal_Click"
+                                            Content="KEEP LOCAL" />
+                                        <Button
+                                            x:Uid="KeepCloud"
+                                            Grid.Column="2"
+                                            Style="{StaticResource PixelButtonStyle}"
+                                            Click="KeepCloud_Click"
+                                            Content="KEEP CLOUD" />
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                    </Grid>
-                </Border>
-
-                <Border
-                    Grid.Column="1"
-                    Padding="20"
-                    Background="#FFFFFCF5"
-                    BorderBrush="{StaticResource PixelInkBrush}"
-                    BorderThickness="2">
-                    <StackPanel Spacing="14">
-                        <TextBlock
-                            FontFamily="Cascadia Mono"
-                            FontSize="17"
-                            FontWeight="Bold"
-                            Text="TASK INSPECTOR" />
-                        <Rectangle Height="2" Fill="{StaticResource PixelInkBrush}" />
-                        <TextBlock
-                            FontFamily="Cascadia Mono"
-                            FontSize="10"
-                            Foreground="{StaticResource PixelMutedBrush}"
-                            Text="SELECT A TASK TO EDIT" />
-                        <TextBox
-                            Header="TITLE"
-                            IsEnabled="{Binding HasSelection}"
-                            Style="{StaticResource PixelTextBoxStyle}"
-                            Text="{Binding EditorTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            TextWrapping="Wrap" />
-                        <ComboBox
-                            Header="PRIORITY"
-                            CornerRadius="0"
-                            FontFamily="Cascadia Mono"
-                            IsEnabled="{Binding HasSelection}"
-                            ItemsSource="{Binding Priorities}"
-                            SelectedItem="{Binding EditorPriority, Mode=TwoWay}" />
-                        <DatePicker
-                            Header="DUE DATE"
-                            CornerRadius="0"
-                            FontFamily="Cascadia Mono"
-                            IsEnabled="{Binding HasSelection}"
-                            Date="{Binding EditorDueDate, Mode=TwoWay}" />
-                        <TimePicker
-                            Header="DUE TIME"
-                            CornerRadius="0"
-                            FontFamily="Cascadia Mono"
-                            IsEnabled="{Binding HasSelection}"
-                            Time="{Binding EditorDueTime, Mode=TwoWay}" />
-                        <ComboBox
-                            Header="REPEAT"
-                            CornerRadius="0"
-                            FontFamily="Cascadia Mono"
-                            IsEnabled="{Binding HasSelection}"
-                            ItemsSource="{Binding RepeatOptions}"
-                            SelectedItem="{Binding EditorRepeat, Mode=TwoWay}" />
-                        <Button
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            IsEnabled="{Binding HasSelection}"
-                            Style="{StaticResource PixelButtonStyle}"
-                            Background="{StaticResource PixelAccentBrush}"
-                            Click="SaveTodo_Click"
-                            Content="SAVE CHANGES" />
-                        <Button
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            IsEnabled="{Binding HasSelection}"
-                            Style="{StaticResource PixelButtonStyle}"
-                            Click="DeleteTodo_Click"
-                            Content="DELETE" />
                     </StackPanel>
-                </Border>
-            </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>
